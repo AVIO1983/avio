@@ -37,6 +37,7 @@ class AuthManager:
         return bool(secret and verify_totp(secret, otp))
 
     def toggle_2fa(self, user_id: int, enable: bool) -> dict | None:
+    def toggle_2fa(self, user_id: int, enable: bool) -> str | None:
         if not enable:
             self.db.execute("UPDATE users SET two_fa_enabled=0, two_fa_secret=NULL WHERE id=?", (user_id,))
             return None
@@ -45,6 +46,7 @@ class AuthManager:
         user = self.db.fetch_one("SELECT username FROM users WHERE id=?", (user_id,))
         uri = build_otpauth_uri(user["username"], secret)
         return {"secret": secret, "uri": uri, "username": user["username"]}
+        return build_otpauth_uri(user["username"], secret)
 
     def update_phone(self, user_id: int, phone_number: str) -> None:
         self.db.execute("UPDATE users SET phone_number=? WHERE id=?", (phone_number, user_id))

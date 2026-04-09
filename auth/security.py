@@ -10,6 +10,9 @@ import time
 
 import qrcode
 
+import struct
+import time
+
 
 def hash_password(password: str, salt: str | None = None) -> tuple[str, str]:
     salt = salt or base64.b64encode(os.urandom(16)).decode("utf-8")

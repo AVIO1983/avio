@@ -504,6 +504,12 @@ class DashboardFrame(ctk.CTkFrame):
             text_color="gray",
         ).pack(pady=(6, 12))
 
+        uri = AuthManager(self.db).toggle_2fa(self.user["id"], bool(self.enable_2fa.get()))
+        if uri:
+            messagebox.showinfo("2FA Enabled", f"Add this URI to Authenticator:\n{uri}")
+        else:
+            messagebox.showinfo("2FA", "Disabled")
+
     def add_service(self):
         name = self.service_name_entry.get().strip()
         if not name:

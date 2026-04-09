@@ -7,6 +7,7 @@ Production-style Python desktop software for digital service shops using **Custo
 - Premium centered CustomTkinter UI with sidebar and icon labels.
 - Login system with secure PBKDF2 password hashing.
 - Authenticator-based 2FA with scannable QR code (Google/Microsoft/Authy compatible).
+- Authenticator-based 2FA (TOTP compatible with Google Authenticator URI).
 - Full transaction system with auto transaction IDs, duplicate detection, and auto-commission.
 - Commission rules per service: fixed or percentage.
 - Permanent SQLite storage with auto DB creation.
