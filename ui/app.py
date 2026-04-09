@@ -6,10 +6,12 @@ from pathlib import Path
 import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from PIL import Image
 from tkcalendar import DateEntry
 from tkinter import messagebox
 
 from auth.auth_manager import AuthManager
+from auth.security import build_totp_qr_png_bytes
 from backup.backup_manager import BackupManager
 from database.db_manager import DatabaseManager
 from database.repositories import CommissionRepository, ServiceRepository, TransactionRepository
@@ -458,6 +460,50 @@ class DashboardFrame(ctk.CTkFrame):
         ctk.CTkButton(service_box, text="Add Service", command=self.add_service).grid(row=0, column=1, padx=8)
 
     def apply_2fa(self):
+        result = AuthManager(self.db).toggle_2fa(self.user["id"], bool(self.enable_2fa.get()))
+        if result:
+            self.show_2fa_qr_modal(result)
+        else:
+            messagebox.showinfo("2FA", "Disabled")
+
+    def show_2fa_qr_modal(self, result: dict):
+        import io
+
+        qr_bytes = build_totp_qr_png_bytes(result["username"], result["secret"])
+        image = Image.open(io.BytesIO(qr_bytes))
+
+        modal = ctk.CTkToplevel(self)
+        modal.title("Scan Authenticator QR")
+        modal.geometry("420x520")
+        modal.grab_set()
+
+        ctk.CTkLabel(
+            modal,
+            text="Scan with Google / Microsoft / Any TOTP Authenticator",
+            font=ctk.CTkFont(size=16, weight="bold"),
+        ).pack(pady=(16, 10))
+        ctk_img = ctk.CTkImage(light_image=image, dark_image=image, size=(280, 280))
+        img_lbl = ctk.CTkLabel(modal, text="", image=ctk_img)
+        img_lbl.image = ctk_img
+        img_lbl.pack(pady=8)
+
+        ctk.CTkLabel(modal, text="Manual setup secret:").pack(pady=(8, 4))
+        secret_entry = ctk.CTkEntry(modal, width=320)
+        secret_entry.insert(0, result["secret"])
+        secret_entry.configure(state="readonly")
+        secret_entry.pack(pady=(0, 10))
+
+        uri_box = ctk.CTkTextbox(modal, width=360, height=80)
+        uri_box.insert("1.0", result["uri"])
+        uri_box.configure(state="disabled")
+        uri_box.pack(pady=8)
+
+        ctk.CTkLabel(
+            modal,
+            text="Use generated 6-digit OTP during login.",
+            text_color="gray",
+        ).pack(pady=(6, 12))
+
         uri = AuthManager(self.db).toggle_2fa(self.user["id"], bool(self.enable_2fa.get()))
         if uri:
             messagebox.showinfo("2FA Enabled", f"Add this URI to Authenticator:\n{uri}")

@@ -4,6 +4,12 @@ import base64
 import hashlib
 import hmac
 import os
+import io
+import struct
+import time
+
+import qrcode
+
 import struct
 import time
 
@@ -42,3 +48,14 @@ def verify_totp(secret: str, otp: str, interval: int = 30, window: int = 1) -> b
 
 def build_otpauth_uri(username: str, secret: str, issuer: str = "DigitalServiceManager") -> str:
     return f"otpauth://totp/{issuer}:{username}?secret={secret}&issuer={issuer}"
+
+
+def build_totp_qr_png_bytes(username: str, secret: str, issuer: str = "DigitalServiceManager") -> bytes:
+    uri = build_otpauth_uri(username, secret, issuer)
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=8, border=2)
+    qr.add_data(uri)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    return buffer.getvalue()
