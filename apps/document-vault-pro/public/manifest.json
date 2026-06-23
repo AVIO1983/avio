@@ -1,0 +1,9 @@
+{
+  "name": "CHOWDARYS ONLINE SERVICES - Digital Document Vault Pro",
+  "short_name": "Vault Pro",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#041025",
+  "theme_color": "#246BFE",
+  "icons": []
+}

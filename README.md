@@ -43,3 +43,15 @@ The code is PyInstaller-friendly because the application logic is contained in `
 ```bash
 pyinstaller --onefile --windowed --name "PrinterDoctorProEnterprise" main.py
 ```
+
+
+## CHOWDARYS ONLINE SERVICES - DIGITAL DOCUMENT VAULT PRO
+
+This repository now includes a Next.js + Supabase SaaS scaffold under `apps/document-vault-pro` for the CHOWDARYS ONLINE SERVICES Digital Document Vault Pro platform. It includes a premium glassmorphism UI, PWA manifest, security headers, protected preview component, role/status constants, document category coverage, and a Supabase PostgreSQL schema for brands, franchises, profiles, family vaults, documents, wallets, payments, subscriptions, requests, CRM, tickets, consent, devices and audit logs.
+
+Key files:
+
+- `apps/document-vault-pro/app/page.tsx` — premium responsive landing/dashboard experience.
+- `apps/document-vault-pro/components/document-preview.tsx` — preview-only protected document surface with watermark and disabled context menu/drag.
+- `apps/document-vault-pro/lib/platform.ts` — roles, statuses, categories, languages, modules and dashboard metrics.
+- `supabase/document_vault_schema.sql` — Supabase database architecture with RLS policies.

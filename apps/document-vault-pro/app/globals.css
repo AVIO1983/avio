@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #041025; color: white; }
+.glass { @apply border border-white/15 bg-white/10 shadow-glow backdrop-blur-2xl; }
+.safe-preview { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
