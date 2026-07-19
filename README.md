@@ -55,3 +55,8 @@ Key files:
 - `apps/document-vault-pro/components/document-preview.tsx` — preview-only protected document surface with watermark and disabled context menu/drag.
 - `apps/document-vault-pro/lib/platform.ts` — roles, statuses, categories, languages, modules and dashboard metrics.
 - `supabase/document_vault_schema.sql` — Supabase database architecture with RLS policies.
+
+
+## MSOS Billing Pro Enterprise
+
+This repository includes `msos_billing_pro_enterprise.py`, an offline-first PySide6/SQLite professional billing application with customer, service, company, invoice, template designer, PDF/image export, QR/barcode, audit log and Google Drive upload queue support. See `MSOS_BILLING_PRO_README.md` for installation and operation details.
